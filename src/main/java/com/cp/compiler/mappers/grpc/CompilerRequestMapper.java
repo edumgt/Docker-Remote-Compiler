@@ -18,12 +18,11 @@ import java.util.stream.Collectors;
 public interface CompilerRequestMapper {
 
     @Mapping(source = "testCases", target = "testCases", qualifiedByName = "toTestCases")
-    @Mapping(source = "language", target = "language", qualifiedByName = "toLanguage")
+    @Mapping(source = "language",  target = "language",  qualifiedByName = "toLanguage")
     RemoteCodeCompilerRequest toCompilerRequest(CompilerProto.RemoteCodeCompilerRequest protoRequest);
 
     @Named("toLanguage")
     static Language toLanguage(CompilerProto.RemoteCodeCompilerRequest.Language language) {
-
         switch (language) {
             case C: return Language.C;
             case CPP: return Language.CPP;
@@ -38,7 +37,7 @@ public interface CompilerRequestMapper {
             case RUST: return Language.RUST;
             case UNRECOGNIZED:
             default:
-                throw new CompilerBadRequestException("Language not supported");
+                throw new CompilerBadRequestException("Language not supported: " + language);
         }
     }
 
@@ -46,11 +45,18 @@ public interface CompilerRequestMapper {
     static LinkedHashMap<String, TestCase> toTestCases(
             Map<String, CompilerProto.RemoteCodeCompilerRequest.TestCase> testCases) {
 
-        return new LinkedHashMap<>(testCases.entrySet()
-                                            .stream()
-                                            .collect(Collectors.toMap(
-                                                        Map.Entry::getKey, entry -> new TestCase(
-                                                                entry.getValue().getInput(),
-                                                                entry.getValue().getExpectedOutput()))));
+        return new LinkedHashMap<>(
+            testCases.entrySet()
+                .stream()
+                .collect(Collectors.toMap(
+                    Map.Entry::getKey,
+                    entry -> new TestCase(
+                        entry.getValue().getInput(),
+                        entry.getValue().getExpectedOutput()
+                    ),
+                    (a, b) -> a,
+                    LinkedHashMap::new
+                ))
+        );
     }
 }

@@ -1,13 +1,12 @@
 package com.cp.compiler.mappers;
 
-import com.cp.compiler.models.testcases.TransformedTestCase;
-import com.cp.compiler.contract.testcases.TestCase;
 import com.cp.compiler.consts.WellKnownFiles;
-import org.springframework.mock.web.MockMultipartFile;
+import com.cp.compiler.contract.InMemoryMultipartFile;
+import com.cp.compiler.contract.testcases.TestCase;
+import com.cp.compiler.models.testcases.TransformedTestCase;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -18,48 +17,45 @@ import java.util.Map;
  * @author Zakaria Maaraki
  */
 public abstract class TestCaseMapper {
-    
+
     private TestCaseMapper() {}
-    
+
     /**
      * Converts a testCase into an instance of ConvertedTestCase
-     *
-     * @param testCase   the test case
-     * @param testCaseId the test case id
-     * @return the converted test case
-     * @throws IOException the io exception
      */
-    public static TransformedTestCase toConvertedTestCase(TestCase testCase, String testCaseId) throws IOException {
+    public static TransformedTestCase toConvertedTestCase(TestCase testCase, String testCaseId) {
         var convertedTestCase = new TransformedTestCase();
         convertedTestCase.setTestCaseId(testCaseId);
         convertedTestCase.setInputFile(getInput(testCase.getInput(), testCaseId));
         convertedTestCase.setExpectedOutput(testCase.getExpectedOutput());
         return convertedTestCase;
     }
-    
+
     /**
      * Converts a dictionary of TestCases into a list of ConvertedTestCases
-     *
-     * @param testCases the test cases
-     * @return the list
-     * @throws IOException the io exception
      */
-    public static List<TransformedTestCase> toConvertedTestCases(Map<String, TestCase> testCases) throws IOException {
+    public static List<TransformedTestCase> toConvertedTestCases(Map<String, TestCase> testCases) {
         List<TransformedTestCase> convertedTestCases = new ArrayList<>();
         for (String id : testCases.keySet()) {
             convertedTestCases.add(toConvertedTestCase(testCases.get(id), id));
         }
         return convertedTestCases;
     }
-    
-    private static MultipartFile getInput(String input, String id) throws IOException {
+
+    private static MultipartFile getInput(String input, String id) {
         if (input == null || input.isEmpty()) {
             return null;
         }
-        return new MockMultipartFile(
-                id + "-" + WellKnownFiles.INPUT_FILE_NAME,
-                id + "-" + WellKnownFiles.INPUT_FILE_NAME,
-                null,
-                new ByteArrayInputStream(input.getBytes()));
+
+        String fileName = id + "-" + WellKnownFiles.INPUT_FILE_NAME;
+        byte[] bytes = input.getBytes(StandardCharsets.UTF_8);
+
+        // ✅ spring-test 없이도 MultipartFile 생성
+        return new InMemoryMultipartFile(
+                fileName,        // name
+                fileName,        // originalFilename
+                "text/plain",    // contentType
+                bytes
+        );
     }
 }

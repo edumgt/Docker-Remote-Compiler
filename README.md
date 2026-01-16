@@ -194,8 +194,35 @@ docker volume create compiler
 ```shell
 ./environment/build.sh
 ```
+```powershell
+Set-ExecutionPolicy -Scope Process Bypass
+cd environment
+.\pbuild.ps1
+```
+---
+```
+& mvn package -f "c:\edumgt-test\rcc\pom.xml" -DskipTests  
+```
 
 4- Run the container:
+```powershell
+docker build -t compiler .
+```
+
+
+```
+docker run --rm -p 8080:8082 `
+  -v /var/run/docker.sock:/var/run/docker.sock `
+  -e DELETE_DOCKER_IMAGE=true `
+  -e EXECUTION_MEMORY_MAX=10000 `
+  -e EXECUTION_MEMORY_MIN=0 `
+  -e EXECUTION_TIME_MAX=15 `
+  -e EXECUTION_TIME_MIN=0 `
+  -e MAX_REQUESTS=1000 `
+  -e MAX_EXECUTION_CPUS=0.2 `
+  -e COMPILATION_CONTAINER_VOLUME=compiler `
+  compiler
+```
 
 ```shell
 docker container run -p 8080:8082 -v /var/run/docker.sock:/var/run/docker.sock -v compiler:/compiler -e DELETE_DOCKER_IMAGE=true -e EXECUTION_MEMORY_MAX=10000 -e EXECUTION_MEMORY_MIN=0 -e EXECUTION_TIME_MAX=15 -e EXECUTION_TIME_MIN=0 -e MAX_REQUESTS=1000 -e MAX_EXECUTION_CPUS=0.2 -e COMPILATION_CONTAINER_VOLUME=compiler -t compiler
