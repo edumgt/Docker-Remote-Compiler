@@ -242,6 +242,13 @@ See the documentation in the [local](https://github.com/zakariamaaraki/RemoteCod
 docker-compose up --build
 ```
 
+## Docker
+![alt text](image-8.png)
+![alt text](image-9.png)
+
+
+
+
 ## On K8s
 
 <p align="center">
