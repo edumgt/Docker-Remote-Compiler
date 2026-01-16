@@ -17,22 +17,17 @@ import java.util.Map;
 @Slf4j
 @Configuration
 public class ErrorAttributesConfig {
-    
-    /**
-     * Build customized error attributes.
-     *
-     * @return the error attributes
-     */
+
     @Bean
     public ErrorAttributes errorAttributes() {
-        
+
         return new DefaultErrorAttributes() {
-            
+
             @Override
             public Map<String, Object> getErrorAttributes(WebRequest webRequest, ErrorAttributeOptions options) {
                 Map<String, Object> errorAttributes = super.getErrorAttributes(webRequest, options);
                 Throwable error = getError(webRequest);
-                
+
                 if (error instanceof MonitoredException) {
                     MonitoredException monitoredException = (MonitoredException) error;
                     errorAttributes.put("errorCode", monitoredException.getErrorCode());
@@ -40,14 +35,14 @@ public class ErrorAttributesConfig {
                     errorAttributes.put("isRetryableError", monitoredException.isRetryableError());
                     errorAttributes.put("retryIn", monitoredException.getRetryIn());
                 } else {
-                    // Unexpected errors
-                    log.info("The following error message will be hidden to the caller: {}", error.getMessage());
+                    // Unexpected errors (or null)
+                    String hidden = (error != null ? String.valueOf(error.getMessage()) : "<null>");
+                    log.info("The following error message will be hidden to the caller: {}", hidden);
                     errorAttributes.put("message", "Unexpected error occurred");
                 }
-                
+
                 return errorAttributes;
             }
-            
         };
     }
 }

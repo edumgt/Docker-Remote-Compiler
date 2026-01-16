@@ -1,0 +1,7 @@
+HTTP/1.1 400 
+Content-Type: application/json
+Transfer-Encoding: chunked
+Date: Fri, 16 Jan 2026 14:12:49 GMT
+Connection: close
+
+{"timestamp":"2026-01-16T14:12:49.252+00:00","status":400,"error":"Bad Request","message":"Unexpected error occurred","path":"/api/compile/json"}

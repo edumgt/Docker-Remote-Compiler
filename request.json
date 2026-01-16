@@ -1,0 +1,9 @@
+﻿{
+  "sourcecode": "// Java code here\npublic class main {\n    public static void main(String[] args) {\n        System.out.println(\"NO\");\n    }\n}",
+  "language": "JAVA",
+  "testCases": {
+    "test1": { "input": "", "expectedOutput": "NO" }
+  },
+  "memoryLimit": 500,
+  "timeLimit": 2
+}

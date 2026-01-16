@@ -267,6 +267,54 @@ For the Rest API documentation visit the swagger page at the following url : htt
 ```shell
 curl  'http://localhost:8080/api/compile/json'  -X POST  -H 'Content-Type: application/json; charset=UTF-8'  --data-raw '{"sourcecode":"// Java code here\npublic class main {\n    public static void main(String[] args) {\n        System.out.println(\"NO\");\n    }\n}","language":"JAVA", "testCases": {"test1" : {"input" : "", "expectedOutput" : "NO"}}, "memoryLimit" : 500, "timeLimit": 2 }'
 ```
+---
+## http://localhost:8080/swagger-ui.html
+
+## http://localhost:8080/problem/1
+
+## http://localhost:8080/prometheus
+
+## prometheus
+```
+docker network create monitoring 2>$null
+docker run -d --name prometheus `
+  --network monitoring `
+  -p 9090:9090 `
+  prom/prometheus
+```
+```
+docker run -d --name prometheus2 `
+  --network monitoring `
+  -p 19090:9090 `
+  prom/prometheus
+```
+## http://localhost:19090/query
+![](image-7.png)
+```
+PS C:\edumgt-test\rcc> docker run -d --name prometheus2 `
+>>   --network monitoring `
+>>   -p 19090:9090 `
+>>   prom/prometheus
+d06936df1443e8d902f8872fa26c5ff73aad04cc7fce762be0206e2b4f437341
+PS C:\edumgt-test\rcc> docker network inspect monitoring --format "{{json .Containers}}"      
+{"d06936df1443e8d902f8872fa26c5ff73aad04cc7fce762be0206e2b4f437341":{"Name":"prometheus2","EndpointID":"90573d04a20801c5b8973b474ad1e7856f01f807c30aa08634d3f5d9ac1782a1","MacAddress":"72:87:0a:5c:36:11","IPv4Address":"172.20.0.2/16","IPv6Address":""}}
+PS C:\edumgt-test\rcc> docker network connect monitoring local-grafana-1
+PS C:\edumgt-test\rcc> docker network inspect monitoring --format "{{json .Containers}}"
+{"a3bd2953760fa1efdc4735bb41cec80676176d6612f6c5a54837801c411591bf":{"Name":"local-grafana-1","EndpointID":"c6e3bed21068330443a7450e318fdee0568cc5df7adcb4f195c4d001479c9637","MacAddress":"ca:16:5c:13:56:4f","IPv4Address":"172.20.0.3/16","IPv6Address":""},"d06936df1443e8d902f8872fa26c5ff73aad04cc7fce762be0206e2b4f437341":{"Name":"prometheus2","EndpointID":"90573d04a20801c5b8973b474ad1e7856f01f807c30aa08634d3f5d9ac1782a1","MacAddress":"72:87:0a:5c:36:11","IPv4Address":"172.20.0.2/16","IPv6Address":""}}
+```
+
+
+
+## http://localhost:3000/login - admin / admin
+![alt text](image.png)
+![alt text](image-1.png)
+![alt text](image-2.png)
+![alt text](image-3.png)
+![alt text](image-4.png)
+![alt text](image-5.png)
+![alt text](image-6.png)
+
+
 
 > **_NOTE:_** The time limit in the request should be in seconds (s) and the memory limit in megabytes (MB).
 
