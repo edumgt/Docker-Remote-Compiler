@@ -31,6 +31,7 @@ Supports **Rest Calls (Long Polling and [Push Notification](https://en.wikipedia
   - [Execution Performance](#execution-performance)
   - [Observations and Insights](#observations-and-insights)
 - [Prerequisites](#prerequisites)
+- [Build JAR](#build-jar)
 - [Getting Started](#getting-started)
 - [Local Run (for dev environment only)](#local-run-for-dev-environment-only)
 - [On K8s](#on-k8s)
@@ -162,6 +163,17 @@ Given that the problem have 10 test cases, the total execution duration for all 
 ## Prerequisites
 
 To run this project you need a docker engine running on your machine.
+
+## Build JAR
+
+Use Maven to compile the Java sources and build the application JAR:
+
+```shell
+mvn -s .mvn/settings.xml -DskipTests package
+```
+
+If your environment requires an HTTP proxy to reach Maven Central, the proxy settings are defined in
+`.mvn/settings.xml`. Adjust the host/port values if you use a different proxy.
 
 ## Getting Started
 

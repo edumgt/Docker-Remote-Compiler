@@ -42,3 +42,5 @@ mvnw
 mvnw.cmd
 .directory
 .mvn
+!.mvn/
+!.mvn/settings.xml
