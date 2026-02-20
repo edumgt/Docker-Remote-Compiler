@@ -1,9 +1,3 @@
-[![Build and Test](https://github.com/zakariamaaraki/RemoteCodeCompiler/actions/workflows/build-master.yaml/badge.svg)](https://github.com/zakariamaaraki/RemoteCodeCompiler/actions/workflows/build.yaml) 
-[![Environment Docker Images CI](https://github.com/zakariamaaraki/RemoteCodeCompiler/actions/workflows/environment.yaml/badge.svg)](https://github.com/zakariamaaraki/RemoteCodeCompiler/actions/workflows/environment.yaml)
-[![Docker](https://badgen.net/badge/icon/docker?icon=docker&label)](https://https://docker.com/)
-[![Test Coverage](https://github.com/zakariamaaraki/RemoteCodeCompiler/blob/master/.github/badges/jacoco.svg)](https://github.com/zakariamaaraki/RemoteCodeCompiler/actions/workflows/build.yaml)
-[![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
-
 # Remote Code Compiler
 
 ![UI](images/remote-code-compiler-ui.png?raw=true "User Interface")
